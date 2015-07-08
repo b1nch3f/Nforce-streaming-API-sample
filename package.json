@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "afosop",
   "version": "0.1.4",
-  "description": "A sample Node.js app using Express 4",
+  "description": "A psychology based training program for ssb candidates",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
