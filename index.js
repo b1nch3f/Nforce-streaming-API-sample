@@ -3,7 +3,7 @@ var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 
-app.use(express.static('public'));
+app.use(express.static(process.cwd() + '/public'));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
