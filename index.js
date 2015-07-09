@@ -1,9 +1,5 @@
 var express = require('express');
 var app = express();
-var sftools = require('./sf-tools');
-
-//SF app secret
-var SF_CANVASAPP_CLIENT_SECRET = process.env.SF_CANVASAPP_CLIENT_SECRET;
 
 app.set('port', (process.env.PORT || 5000));
 
