@@ -19,15 +19,7 @@ app.get('/', function(request, response) {
 
 //canvas callback
 app.post('/canvas/callback', function(req,res){
-    sftools.canvasCallback(req.body, SF_CANVASAPP_CLIENT_SECRET, function(error, canvasRequest){
-        if(error){
-            res.statusCode = 400;
-            return res.render('error',{error: error});
-        }
-        //saves the token details into session
-        sftools.saveCanvasDetailsInSession(req,canvasRequest);
-        return res.redirect('/');
-    });
+    return res.redirect('/');
 });
 
 app.listen(app.get('port'), function() {
