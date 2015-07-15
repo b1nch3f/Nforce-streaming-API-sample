@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="https://login.salesforce.com/canvas/sdk/js/33.0/canvas-all.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jsforce/1.4.1/jsforce.min.js"></script>
   
     <% include ../partials/header.ejs %>
     <link rel="stylesheet" href="styles/main.css">
@@ -11,52 +11,7 @@
     <div data-ng-app="StarterApp">
       <div data-ng-controller="AppCtrl">
         <div layout="row" layout-align="center center">
-          <script>
-            function loginHandler(e) {
-              var uri;
-              if (! Sfdc.canvas.oauth.loggedin()) {
-                uri = Sfdc.canvas.oauth.loginUrl();
-                Sfdc.canvas.oauth.login(
-                  {
-                    uri : uri,
-                    params: {
-                      response_type : "token",
-                      client_id : "3MVG9ZL0ppGP5UrCN4Se0WPHFBrquP75L7MA0cFcCVdSTcbuv4o_9EDY036KrG2VEbmiZ7FBzIqb7Xb8EYHwE",
-                      redirect_uri : encodeURIComponent("https://storail.herokuapp.com")
-                    }
-                  }
-                );
-              }
-              else {
-                Sfdc.canvas.oauth.logout();
-                login.innerHTML = "Login";
-                Sfdc.canvas.byId("oauth").innerHTML = "";
-              }
-              return false;
-            }
-            // Bootstrap the page once the DOM is ready.
-            Sfdc.canvas(function() {
-              // On Ready...
-              var login = Sfdc.canvas.byId("login"),
-              loggedIn = Sfdc.canvas.oauth.loggedin(),
-              token = Sfdc.canvas.oauth.token()
-              login.innerHTML = (loggedIn) ? "Logout" : "Login";
-              if (loggedIn) {
-                // Only displaying part of the OAuth token for better formatting.
-                Sfdc.canvas.byId("oauth").innerHTML = Sfdc.canvas.oauth.token()
-                .substring(1,40) + "…";
-              }
-              login.onclick=loginHandler;
-              }
-            );
-          </script>
-          <h1 id="header">Force.com Canvas OAuth App</h1>
-          <div>
-            access_token = <span id="oauth"></span>
-          </div>
-          <div>
-            <a id="login" href="#">Login</a><br/>
-          </div>
+          <button onclick="javascript:jsforce.browser.login();">Login</button>
         </div>
       </div>
     </div>
