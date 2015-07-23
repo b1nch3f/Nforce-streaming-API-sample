@@ -28,7 +28,31 @@ function routeHandler() {
     response.send('yo');
   }).get('/oauth/_callback', function(request, response) {
       return response.redirect('/');
-  });
+  }).get('/createAccount', function(req, res){
+      console.log('Attempting to insert account');
+      var acc = nforce.createSObject('Account');
+      acc.set('Name', 'Spiffy Cleaners');
+      acc.set('Phone', '800-555-2345');
+      acc.set('SLA__c', 'Gold');
+      
+      org.insert({ sobject: acc, oauth: oauth }, function(err, resp){
+        if(!err) res.send('It worked!');
+      });
+    }
+  ).get('/getAccounts', function(req, res){
+      console.log('Attempting to get accounts');
+      var q = 'SELECT Id, Name, CreatedDate, BillingCity FROM Account';
+
+      org.query({ query: q, oauth: oauth}, function(err, resp){
+      
+        if(!err && resp) {
+      
+          res.send(JSON.stringify(resp));
+      
+        }
+      });
+    }
+  );
 }
 
 org.authenticate({ username: USERNAME, password: PASSWORD }, function(err, resp) {
