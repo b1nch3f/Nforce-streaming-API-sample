@@ -31,7 +31,7 @@ function routeHandler() {
   }).get('/createAccount', function(req, res){
       console.log('Attempting to insert account');
       var acc = nforce.createSObject('Account');
-      acc.set('Name', 'Spiffy Cleaners');
+      acc.set('Name', 'Tuffy Cleaners');
       acc.set('Phone', '800-555-2345');
       acc.set('SLA__c', 'Gold');
       
