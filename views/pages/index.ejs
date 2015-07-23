@@ -54,6 +54,13 @@
               <div class="transcription">{{transcription}}</div>
             </div>
           </div>
+          
+          <!-- account data -->
+          <div class="row">
+            <div class="col-xs-12 col-md-12">
+              <div class="account_data"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -66,6 +73,17 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/material.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/ripples.min.js"></script>
+    
+    <!-- socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect();
+
+      socket.on('data', function (data) {
+        console.log(data); 
+        $(".account_data").text(data);
+      });
+    </script>
     
     <!-- custom js -->
     <script src="js/custom.js"></script>

@@ -1,5 +1,10 @@
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
+// attach socket.io and listen
+var io = require('socket.io')(server);
+// get a reference to the socket once a client connects
+var socket = io.sockets.on('connection', function (socket) { });
 
 var nforce = require('nforce');
 
@@ -25,7 +30,7 @@ app.set('view engine', 'ejs');
 
 function routeHandler() {
   app.get('/', function(request, response) {
-    response.send('yo');
+    response.render('pages/index');
   }).get('/oauth/_callback', function(request, response) {
       return response.redirect('/');
   }).get('/createAccount', function(req, res){
@@ -55,25 +60,46 @@ function routeHandler() {
   );
 }
 
-org.authenticate({ username: USERNAME, password: PASSWORD }, function(err, resp) {
-  if(err) {
-    console.error('--> unable to authenticate to sfdc');
-      console.error('--> ' + JSON.stringify(err));
+io.on('connection', function(socket){
+  console.log('a user connected');
+    
+  org.authenticate({ username: USERNAME, password: PASSWORD }, function(err, resp) {
+    if(err) {
+      console.error('--> unable to authenticate to sfdc');
+        console.error('--> ' + JSON.stringify(err));
     } else {
-        console.log('--> authenticated!');
-        oauth = resp;
-        routeHandler();
+      console.log('--> authenticated!');
+      oauth = resp;
+      routeHandler();
     }
-  }
-);
+      
+      
+      
+    // subscribe to a pushtopic
+    console.log('connecting to topic');
+    var str = org.stream({ topic: 'AllAccounts', oauth: oauth });
+  
+    str.on('connect', function(){
+      console.log('connected to pushtopic');
+    });
+  
+    str.on('error', function(error) {
+      console.log('error: ' + error);
+    });
+  
+    str.on('data', function(data) {
+      console.log(data.event.type + ': ' + data.sobject.Name);
+      socket.emit('data', data.sobject.Name);
+    });
+  });
+    
+});
 
 //canvas callback
 app.post('/canvas/callback', function(req,res){
     return res.redirect('/');
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+server.listen(app.get('port'), function() {
+  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
-
-
