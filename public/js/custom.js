@@ -8,6 +8,13 @@ var bucket = new AWS.S3({params: {Bucket: 'storail'}});
 
 app.controller('AppCtrl', ['$scope', '$http', '$interval', function($scope, $http, $interval ) {
     
+    var socket = io.connect();
+
+      socket.on('data', function (data) {
+        console.log(data); 
+        $(".account_data").text(data);
+      });
+    
     $scope.url = 'https://s3-us-west-2.amazonaws.com/storail/';
     
     bucket.listObjects(function (err, data) {
